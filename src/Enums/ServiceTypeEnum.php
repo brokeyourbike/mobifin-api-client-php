@@ -6,13 +6,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-namespace BrokeYourBike\Mobifin\Interfaces;
+namespace BrokeYourBike\Mobifin\Enums;
 
 /**
  * @author Ivan Stasiuk <ivan@stasi.uk>
  */
-interface RequestInterface
+enum ServiceTypeEnum: string
 {
-    public function getId(): string;
-    public function getIp(): string;
+    //
 }

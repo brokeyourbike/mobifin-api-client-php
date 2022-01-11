@@ -11,8 +11,12 @@ namespace BrokeYourBike\Mobifin\Interfaces;
 /**
  * @author Ivan Stasiuk <ivan@stasi.uk>
  */
-interface RequestInterface
+interface EncryptedConfigInterface
 {
-    public function getId(): string;
-    public function getIp(): string;
+    public function getUrl(): string;
+    public function getActivationCode(): string;
+    public function getEncryptionKey(): string;
+    public function getSignKey(): string;
+    public function getPhone(): string;
+    public function getMpin(): string;
 }

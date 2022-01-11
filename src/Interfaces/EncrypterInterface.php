@@ -11,8 +11,8 @@ namespace BrokeYourBike\Mobifin\Interfaces;
 /**
  * @author Ivan Stasiuk <ivan@stasi.uk>
  */
-interface RequestInterface
+interface EncrypterInterface
 {
-    public function getId(): string;
-    public function getIp(): string;
+    public function encrypt(EncryptedConfigInterface $config, string $json): string;
+    public function decrypt(EncryptedConfigInterface $config, string $json): string;
 }

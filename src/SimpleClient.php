@@ -16,6 +16,7 @@ use BrokeYourBike\Mobifin\Models\ValidateActivationOTP;
 use BrokeYourBike\Mobifin\Models\GenerateActivationOTP;
 use BrokeYourBike\Mobifin\Interfaces\RequestInterface;
 use BrokeYourBike\Mobifin\Interfaces\ConfigInterface;
+use BrokeYourBike\Mobifin\Exceptions\DecodeException;
 use BrokeYourBike\HttpEnums\HttpMethodEnum;
 use BrokeYourBike\HttpClient\HttpClientTrait;
 use BrokeYourBike\HttpClient\HttpClientInterface;
@@ -53,13 +54,7 @@ class SimpleClient implements HttpClientInterface
             'TerminalInfo' => $this->config->getTerminalInfo(),
         ]);
 
-        $json = \json_decode($response->getBody(), true);
-
-        if (!isset($json['Data'])) {
-            throw new \Exception('No Data field in response');
-        }
-
-        return new GenerateActivationOTP(\json_decode($json['Data'], true));
+        return new GenerateActivationOTP($this->decode($response));
     }
 
     public function validateActivationOTP(RequestInterface $request, string $otpRequestId, string $otpCode): ValidateActivationOTP
@@ -75,13 +70,7 @@ class SimpleClient implements HttpClientInterface
             'OTP' => $otpCode,
         ]);
 
-        $json = \json_decode($response->getBody(), true);
-
-        if (!isset($json['Data'])) {
-            throw new \Exception('No Data field in response');
-        }
-
-        return new ValidateActivationOTP(\json_decode($json['Data'], true));
+        return new ValidateActivationOTP($this->decode($response));
     }
 
     /**
@@ -101,5 +90,16 @@ class SimpleClient implements HttpClientInterface
 
         $uri = (string) $this->resolveUriFor($this->config->getUrl(), $uri);
         return $this->httpClient->request($method->value, $uri, $options);
+    }
+
+    private function decode(ResponseInterface $response): array
+    {
+        $json = \json_decode($response->getBody(), true);
+
+        if (!isset($json['Data'])) {
+            throw DecodeException::noData($response);
+        }
+
+        return \json_decode($json['Data'], true);
     }
 }
