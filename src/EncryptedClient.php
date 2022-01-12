@@ -76,7 +76,7 @@ class EncryptedClient implements HttpClientInterface
         return new GetProductDetails($this->decode($this->config, $this->encrypter, $response));
     }
 
-    public function topUp(RequestInterface $request, string $productCode, string $phoneNumber, float $amount)
+    public function topUp(RequestInterface $request, string $productCode, string $phoneNumber, float $amount): TopUp
     {
         $response = $this->performRequest(HttpMethodEnum::POST, 'securerest', [
             'MethodName' => 'TopUp',
