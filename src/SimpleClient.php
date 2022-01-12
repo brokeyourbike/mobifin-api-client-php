@@ -90,7 +90,7 @@ class SimpleClient implements HttpClientInterface
         return $this->httpClient->request($method->value, $uri, $options);
     }
 
-    private function decode(ResponseInterface $response): array
+    private function decode(ResponseInterface $response): ?array
     {
         $r = new Response($response);
         return \json_decode($r->data, true);

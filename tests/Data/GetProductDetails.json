@@ -1,0 +1,103 @@
+{
+    "ResponseCode": "000",
+    "ResponseDescription": "Txn Successful",
+    "ProductList": {
+        "ProductID": [
+            "10",
+            "81",
+            "30",
+            "66",
+            "28",
+            "17"
+        ],
+        "ProductName": [
+            "P2P Transfer (Domestic)",
+            "P2P NON Register Transfer (Domestic)",
+            "Business Payment-Customer",
+            "Customer Cash out - Agent",
+            "Customer Cash out - COC",
+            "Merchant Payment"
+        ],
+        "ProductCode": [
+            "S2S",
+            "S2NR",
+            "S2EC",
+            "S2A",
+            "S2O",
+            "S2M"
+        ],
+        "ProductType": [
+            "P",
+            "P",
+            "P",
+            "P",
+            "P",
+            "P"
+        ],
+        "ProductDenominationID": [],
+        "MinAmount": [
+            "250.010000",
+            "1.000000",
+            "1.000000",
+            "1.000000",
+            "10 00.010000",
+            "1.000000"
+        ],
+        "MaxAmount": [
+            "500.000000",
+            "10000.000000",
+            "5000.000000",
+            "200.000000",
+            " 5000.000000",
+            "1000.000000"
+        ],
+        "IsActive": [
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1"
+        ],
+        "InternalModuleID": [
+            "6",
+            "6",
+            "4",
+            "7",
+            "7",
+            "8"
+        ],
+        "ModuleName": [
+            "Transfer Money",
+            "Transfer Money",
+            "Business Payment",
+            "Cash Out",
+            "Cash Out",
+            "Merchant Payment"
+        ],
+        "ProductImage": [
+            "e91e",
+            "e91e",
+            "e90a",
+            "e90c",
+            "e90c",
+            "e913"
+        ],
+        "ProductIconWeb": [
+            "ms-icon- transfer-money",
+            "ms-icon-transfer-money",
+            "ms-icon-business-payment",
+            "ms-icon-cash-out",
+            "ms-icon- cash-out",
+            "ms-icon-merchant- payment"
+        ],
+        "ProductIconMob": [
+            "e91e",
+            "e91e",
+            "e90a",
+            "e90c",
+            "e90c",
+            "e913"
+        ]
+    }
+}

@@ -11,11 +11,16 @@ namespace BrokeYourBike\Mobifin;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\ClientInterface;
 use BrokeYourBike\ResolveUri\ResolveUriTrait;
+use BrokeYourBike\Mobifin\Models\TopUp;
 use BrokeYourBike\Mobifin\Models\Response;
+use BrokeYourBike\Mobifin\Models\GetProductDetails;
 use BrokeYourBike\Mobifin\Models\GetBalance;
 use BrokeYourBike\Mobifin\Interfaces\RequestInterface;
 use BrokeYourBike\Mobifin\Interfaces\EncrypterInterface;
 use BrokeYourBike\Mobifin\Interfaces\EncryptedConfigInterface;
+use BrokeYourBike\Mobifin\Enums\SystemServiceEnum;
+use BrokeYourBike\Mobifin\Enums\SystemModuleEnum;
+use BrokeYourBike\Mobifin\Enums\ProductServiceTypeEnum;
 use BrokeYourBike\HttpEnums\HttpMethodEnum;
 use BrokeYourBike\HttpClient\HttpClientTrait;
 use BrokeYourBike\HttpClient\HttpClientInterface;
@@ -55,23 +60,25 @@ class EncryptedClient implements HttpClientInterface
         return new GetBalance($this->decode($this->config, $this->encrypter, $response));
     }
 
-    public function getProductDetails(RequestInterface $request, int $serviceType, int $systemModuleId, int $systemServiceId): ResponseInterface
+    public function getProductDetails(RequestInterface $request, ProductServiceTypeEnum $serviceType, SystemModuleEnum $systemModuleId, SystemServiceEnum $systemServiceId): GetProductDetails
     {
-        return $this->performRequest(HttpMethodEnum::POST, 'securerest', [
+        $response = $this->performRequest(HttpMethodEnum::POST, 'securerest', [
             'MethodName' => 'GetProductDetails',
             'ActivationCode' => $this->config->getActivationCode(),
             'ProductID' => null,
-            'SystemModuleID' => $systemModuleId,
-            'SystemServiceID' => $systemServiceId,
-            'ProductServiceType' => $serviceType,
+            'SystemModuleID' => $systemModuleId->value,
+            'SystemServiceID' => $systemServiceId->value,
+            'ProductServiceType' => $serviceType->value,
             'RequestUniqueID' => $request->getId(),
             'RequestIP' => $request->getIp(),
         ]);
+
+        return new GetProductDetails($this->decode($this->config, $this->encrypter, $response));
     }
 
-    public function topUp(RequestInterface $request, string $productCode, string $phoneNumber, float $amount): ResponseInterface
+    public function topUp(RequestInterface $request, string $productCode, string $phoneNumber, float $amount)
     {
-        return $this->performRequest(HttpMethodEnum::POST, 'securerest', [
+        $response = $this->performRequest(HttpMethodEnum::POST, 'securerest', [
             'MethodName' => 'TopUp',
             'ActivationCode' => $this->config->getActivationCode(),
             'ProductCode' => $productCode,
@@ -82,6 +89,8 @@ class EncryptedClient implements HttpClientInterface
             'RequestUniqueID' => $request->getId(),
             'RequestIP' => $request->getIp(),
         ]);
+
+        return new TopUp($this->decode($this->config, $this->encrypter, $response));
     }
 
     /**
@@ -105,7 +114,7 @@ class EncryptedClient implements HttpClientInterface
         return $this->httpClient->request($method->value, $uri, $options);
     }
 
-    private function decode(EncryptedConfigInterface $config, EncrypterInterface $encrypter, ResponseInterface $response): array
+    private function decode(EncryptedConfigInterface $config, EncrypterInterface $encrypter, ResponseInterface $response): ?array
     {
         $r = new Response($response);
         $decrypted = $encrypter->decrypt($config, $r->data);

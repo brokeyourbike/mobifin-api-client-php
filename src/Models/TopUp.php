@@ -14,7 +14,7 @@ use Spatie\DataTransferObject\Attributes\MapFrom;
 /**
  * @author Ivan Stasiuk <ivan@stasi.uk>
  */
-class GetBalance extends DataTransferObject
+class TopUp extends DataTransferObject
 {
     #[MapFrom('ResponseCode')]
     public string $responseCode;
@@ -25,6 +25,18 @@ class GetBalance extends DataTransferObject
     #[MapFrom('Balance')]
     public ?float $balance;
 
-    #[MapFrom('AvaliableBalance')]
-    public ?float $avaliableBalance;
+    #[MapFrom('ConfirmationCode')]
+    public ?string $confirmationCode;
+
+    #[MapFrom('TransactionID')]
+    public ?string $transactionID;
+
+    #[MapFrom('TransactionFee')]
+    public ?string $transactionFee;
+
+    #[MapFrom('Commission')]
+    public ?string $commission;
+
+    #[MapFrom('RequestDateTime')]
+    public ?string $requestDateTime;
 }

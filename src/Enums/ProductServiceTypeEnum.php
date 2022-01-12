@@ -11,7 +11,9 @@ namespace BrokeYourBike\Mobifin\Enums;
 /**
  * @author Ivan Stasiuk <ivan@stasi.uk>
  */
-enum ServiceTypeEnum: string
+enum ProductServiceTypeEnum: int
 {
-    //
+    case EXTERNAL = 0;
+    case INTERNAL = 1;
+    case GOODS = 2;
 }
