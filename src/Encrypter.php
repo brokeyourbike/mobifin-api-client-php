@@ -20,31 +20,32 @@ class Encrypter implements EncrypterInterface
     public const KEY_LENGTH = 128;
     public const IV = 'fdsfds85435nfdfs';
 
+    private AES $worker;
+
+    public function __construct()
+    {
+        $this->worker = new AES();
+        $this->worker->setKeyLength(self::KEY_LENGTH);
+    }
+
     public function encrypt(EncryptedConfigInterface $config, string $plainText): string
     {
-        $worker = new AES();
-        $worker->setKeyLength(self::KEY_LENGTH);
-        $worker->setKey(base64_decode($config->getEncryptionKey()));
-        $worker->setIV(self::IV);
-
-        $encryptedData = $worker->encrypt($plainText);
+        $this->worker->setKey(base64_decode($config->getEncryptionKey()));
+        $this->worker->setIV(self::IV);
+        $encryptedData = $this->worker->encrypt($plainText);
         $hash = hash_hmac('sha1', $encryptedData, base64_decode($config->getSignKey()), true);
         return base64_encode(self::IV . $hash . $encryptedData);
     }
 
     public function decrypt(EncryptedConfigInterface $config, string $plainText): string
     {
-        $worker = new AES();
-        $worker->setKeyLength(self::KEY_LENGTH);
-        $worker->setKey(base64_decode($config->getEncryptionKey()));
-
         $text = base64_decode($plainText);
         $iv = substr($text, 0, 16);
-        $worker->setIV($iv);
-
         $signData = substr($text, 16, 20);
         $encryptedData = substr($text, 36);
 
-        return $worker->decrypt($encryptedData);
+        $this->worker->setKey(base64_decode($config->getEncryptionKey()));
+        $this->worker->setIV($iv);
+        return $this->worker->decrypt($encryptedData);
     }
 }
