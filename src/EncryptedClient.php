@@ -8,15 +8,14 @@
 
 namespace BrokeYourBike\Mobifin;
 
-use Psr\SimpleCache\CacheInterface;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\ClientInterface;
 use BrokeYourBike\ResolveUri\ResolveUriTrait;
+use BrokeYourBike\Mobifin\Models\Response;
 use BrokeYourBike\Mobifin\Models\GetBalance;
 use BrokeYourBike\Mobifin\Interfaces\RequestInterface;
 use BrokeYourBike\Mobifin\Interfaces\EncrypterInterface;
 use BrokeYourBike\Mobifin\Interfaces\EncryptedConfigInterface;
-use BrokeYourBike\Mobifin\Exceptions\DecodeException;
 use BrokeYourBike\HttpEnums\HttpMethodEnum;
 use BrokeYourBike\HttpClient\HttpClientTrait;
 use BrokeYourBike\HttpClient\HttpClientInterface;
@@ -31,7 +30,6 @@ class EncryptedClient implements HttpClientInterface
 
     private EncryptedConfigInterface $config;
     private EncrypterInterface $encrypter;
-    private CacheInterface $cache;
 
     public function __construct(EncryptedConfigInterface $config, EncrypterInterface $encrypter, ClientInterface $httpClient)
     {
@@ -94,7 +92,7 @@ class EncryptedClient implements HttpClientInterface
      */
     private function performRequest(HttpMethodEnum $method, string $uri, array $data): ResponseInterface
     {
-        $encryptedData = $this->encrypter->encrypt($this->config, \json_encode($data, JSON_FORCE_OBJECT));
+        $encryptedData = $this->encrypter->encrypt($this->config, (string) \json_encode($data, JSON_FORCE_OBJECT));
 
         $options = [
             \GuzzleHttp\RequestOptions::HEADERS => [
@@ -109,13 +107,8 @@ class EncryptedClient implements HttpClientInterface
 
     private function decode(EncryptedConfigInterface $config, EncrypterInterface $encrypter, ResponseInterface $response): array
     {
-        $json = \json_decode($response->getBody(), true);
-
-        if (!isset($json['Data'])) {
-            throw DecodeException::noData($response);
-        }
-
-        $decrypted = $encrypter->decrypt($config, $json['Data']);
+        $r = new Response($response);
+        $decrypted = $encrypter->decrypt($config, $r->data);
         return \json_decode($decrypted, true);
     }
 }

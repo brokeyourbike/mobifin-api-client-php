@@ -8,15 +8,14 @@
 
 namespace BrokeYourBike\Mobifin;
 
-use Psr\SimpleCache\CacheInterface;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\ClientInterface;
 use BrokeYourBike\ResolveUri\ResolveUriTrait;
 use BrokeYourBike\Mobifin\Models\ValidateActivationOTP;
+use BrokeYourBike\Mobifin\Models\Response;
 use BrokeYourBike\Mobifin\Models\GenerateActivationOTP;
 use BrokeYourBike\Mobifin\Interfaces\RequestInterface;
 use BrokeYourBike\Mobifin\Interfaces\ConfigInterface;
-use BrokeYourBike\Mobifin\Exceptions\DecodeException;
 use BrokeYourBike\HttpEnums\HttpMethodEnum;
 use BrokeYourBike\HttpClient\HttpClientTrait;
 use BrokeYourBike\HttpClient\HttpClientInterface;
@@ -30,7 +29,6 @@ class SimpleClient implements HttpClientInterface
     use ResolveUriTrait;
 
     private ConfigInterface $config;
-    private CacheInterface $cache;
 
     public function __construct(ConfigInterface $config, ClientInterface $httpClient)
     {
@@ -94,12 +92,7 @@ class SimpleClient implements HttpClientInterface
 
     private function decode(ResponseInterface $response): array
     {
-        $json = \json_decode($response->getBody(), true);
-
-        if (!isset($json['Data'])) {
-            throw DecodeException::noData($response);
-        }
-
-        return \json_decode($json['Data'], true);
+        $r = new Response($response);
+        return \json_decode($r->data, true);
     }
 }

@@ -33,7 +33,7 @@
         "brokeyourbike/resolve-uri": "^1.0",
         "brokeyourbike/http-enums": "^2.0",
         "phpseclib/phpseclib": "^2.0",
-        "spatie/data-transfer-object": "^3.7"
+        "brokeyourbike/data-transfer-object": "^0.2.0"
     },
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.4",

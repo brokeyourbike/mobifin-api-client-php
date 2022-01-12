@@ -42,7 +42,7 @@ class Encrypter implements EncrypterInterface
         $iv = substr($text, 0, 16);
         $worker->setIV($iv);
 
-        substr($text, 16, 20); // sign data
+        $signData = substr($text, 16, 20);
         $encryptedData = substr($text, 36);
 
         return $worker->decrypt($encryptedData);
