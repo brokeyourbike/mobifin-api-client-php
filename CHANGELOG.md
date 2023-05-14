@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/brokeyourbike/mobifin-api-client-php/compare/v0.1.0...v0.1.1) (2023-05-14)
+
+
+### Miscellaneous Chores
+
+* rearrange badges ([f62df15](https://www.github.com/brokeyourbike/mobifin-api-client-php/commit/f62df15a3f4b9d99864a3a01675fb58946f18c96))
+
 ## 0.1.0 (2022-01-12)
 
 
