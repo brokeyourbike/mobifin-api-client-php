@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/brokeyourbike/mobifin-api-client-php/compare/v0.1.1...v0.1.2) (2023-05-20)
+
+
+### Miscellaneous Chores
+
+* button ([760bdec](https://www.github.com/brokeyourbike/mobifin-api-client-php/commit/760bdece55584393bdc9f7509566abd3aa411590))
+
 ### [0.1.1](https://www.github.com/brokeyourbike/mobifin-api-client-php/compare/v0.1.0...v0.1.1) (2023-05-14)
 
 
